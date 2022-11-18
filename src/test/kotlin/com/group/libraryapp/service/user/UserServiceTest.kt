@@ -59,11 +59,11 @@ class UserServiceTest @Autowired constructor(
         val user = userRepository.save(User("A", 20))
         val updatedName = "B"
         //when
-        userService.updateUserName(UserUpdateRequest(user.id, updatedName))
+        userService.updateUserName(UserUpdateRequest(user.id!!, updatedName))
         //then
         assertThat(userRepository.findById(user.id))
             .get()
-            .extracting(User::getName)
+            .extracting(User::name)
             .isEqualTo(updatedName)
     }
 
