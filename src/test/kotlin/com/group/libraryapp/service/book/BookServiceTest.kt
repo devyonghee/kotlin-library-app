@@ -1,6 +1,6 @@
 package com.group.libraryapp.service.book
 
-import com.group.libraryapp.domain.book.Book
+import com.group.libraryapp.domain.Book
 import com.group.libraryapp.domain.book.BookRepository
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
@@ -37,7 +37,7 @@ class BookServiceTest @Autowired constructor(
         assertThat(bookRepository.findAll())
             .hasSize(1)
             .first()
-            .extracting(Book::getName)
+            .extracting(Book::name)
             .isEqualTo(bookName)
     }
 
