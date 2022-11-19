@@ -9,8 +9,7 @@ import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
-import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatIllegalArgumentException
+import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -30,15 +29,16 @@ class BookServiceTest @Autowired constructor(
     fun saveBook() {
         //given
         val bookName = "이상한 나라의 엘리스"
-        val request = BookRequest(bookName)
+        val bookType = "COMPUTER"
+        val request = BookRequest(bookName, bookType)
         //when
         bookService.saveBook(request)
         //then
         assertThat(bookRepository.findAll())
             .hasSize(1)
             .first()
-            .extracting(Book::name)
-            .isEqualTo(bookName)
+            .extracting(Book::name, Book::type)
+            .isEqualTo(listOf(bookName, bookType))
     }
 
     @Test
@@ -47,7 +47,7 @@ class BookServiceTest @Autowired constructor(
         //given
         val userName = "한용희"
         val bookName = "이상한 나라의 엘리스"
-        bookRepository.save(Book(bookName))
+        bookRepository.save(Book.fixture(bookName))
         val user = userRepository.save(User(userName, null))
         //when
         bookService.loanBook(BookLoanRequest(userName, bookName))
@@ -68,7 +68,7 @@ class BookServiceTest @Autowired constructor(
         //given
         val bookName = "이상한 나라의 엘리스"
         val userName = "한용희"
-        bookRepository.save(Book(bookName))
+        bookRepository.save(Book.fixture(bookName))
         val user = userRepository.save(User(userName, null))
         userLoanHistoryRepository.save(UserLoanHistory(user, bookName, false))
         //when, then
@@ -83,7 +83,7 @@ class BookServiceTest @Autowired constructor(
         //given
         val bookName = "이상한 나라의 엘리스"
         val userName = "한용희"
-        bookRepository.save(Book(bookName))
+        bookRepository.save(Book.fixture(bookName))
         val user = userRepository.save(User(userName, null))
         userLoanHistoryRepository.save(UserLoanHistory(user, bookName, false))
         //when
