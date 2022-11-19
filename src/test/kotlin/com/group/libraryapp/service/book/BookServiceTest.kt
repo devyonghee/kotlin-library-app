@@ -7,6 +7,7 @@ import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
+import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
@@ -59,7 +60,7 @@ class BookServiceTest @Autowired constructor(
             .satisfies {
                 assertThat(it.bookName).isEqualTo(bookName)
                 assertThat(it.user.id).isEqualTo(user.id)
-                assertThat(it.isReturn).isFalse()
+                assertThat(it.status).isEqualTo(UserLoanStatus.LOANED)
             }
     }
 
@@ -71,7 +72,7 @@ class BookServiceTest @Autowired constructor(
         val userName = "한용희"
         bookRepository.save(Book.fixture(bookName))
         val user = userRepository.save(User(userName, null))
-        userLoanHistoryRepository.save(UserLoanHistory(user, bookName, false))
+        userLoanHistoryRepository.save(UserLoanHistory.fixture(user, bookName))
         //when, then
         assertThatIllegalArgumentException().isThrownBy {
             bookService.loanBook(BookLoanRequest(userName, bookName))
@@ -86,15 +87,15 @@ class BookServiceTest @Autowired constructor(
         val userName = "한용희"
         bookRepository.save(Book.fixture(bookName))
         val user = userRepository.save(User(userName, null))
-        userLoanHistoryRepository.save(UserLoanHistory(user, bookName, false))
+        userLoanHistoryRepository.save(UserLoanHistory.fixture(user, bookName))
         //when
         bookService.returnBook(BookReturnRequest(userName, bookName))
         //then
         assertThat(userLoanHistoryRepository.findAll())
             .hasSize(1)
             .first()
-            .extracting(UserLoanHistory::isReturn)
-            .isEqualTo(true)
+            .extracting(UserLoanHistory::status)
+            .isEqualTo(UserLoanStatus.RETURNED)
     }
 
     @AfterEach
