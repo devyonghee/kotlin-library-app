@@ -1,12 +1,16 @@
-package com.group.libraryapp.domain.user
+package com.group.libraryapp.repository.user
 
+import com.group.libraryapp.domain.user.QUser
+import com.group.libraryapp.domain.user.User
 import com.querydsl.jpa.impl.JPAQueryFactory
+import org.springframework.stereotype.Component
 
-class UserRepositoryCustomImpl(
+@Component
+class UserRepositoryCustom(
     private val queryFactory: JPAQueryFactory
-) : UserRepositoryCustom {
+) {
 
-    override fun findAllWithHistories(): List<User> {
+    fun findAllWithHistories(): List<User> {
         return queryFactory.selectFrom(QUser.user)
             .distinct()
             .leftJoin(QUser.user.userLoanHistories)

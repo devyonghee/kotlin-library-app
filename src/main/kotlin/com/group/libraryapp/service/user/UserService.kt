@@ -6,6 +6,7 @@ import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
 import com.group.libraryapp.dto.user.response.UserLoanHistoryResponse
 import com.group.libraryapp.dto.user.response.UserResponse
+import com.group.libraryapp.repository.user.UserRepositoryCustom
 import com.group.libraryapp.util.fail
 import com.group.libraryapp.util.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -13,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val userRepositoryCustom: UserRepositoryCustom
 ) {
 
     @Transactional
@@ -41,7 +43,7 @@ class UserService(
 
     @Transactional(readOnly = true)
     fun getUserLoanHistories(): List<UserLoanHistoryResponse> {
-        return userRepository.findAllWithHistories()
+        return userRepositoryCustom.findAllWithHistories()
             .map(UserLoanHistoryResponse::from)
     }
 }
