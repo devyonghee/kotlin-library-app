@@ -3,7 +3,7 @@ package com.group.libraryapp.controller.book
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
-import com.group.libraryapp.dto.book.response.BookStatusResponse
+import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.service.book.BookService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -36,7 +36,7 @@ class BookController(
     }
 
     @GetMapping("/book/stat")
-    fun getBookStatistics(): List<BookStatusResponse> {
+    fun getBookStatistics(): List<BookStatResponse> {
         return bookService.getBookStatistics()
     }
 }
