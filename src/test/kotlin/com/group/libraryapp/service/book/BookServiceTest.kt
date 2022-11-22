@@ -135,8 +135,8 @@ class BookServiceTest @Autowired constructor(
             .hasSize(2)
             .extracting(BookStatusResponse::type, BookStatusResponse::count)
             .containsAnyOf(
-                tuple(BookType.COMPUTER, 2),
-                tuple(BookType.SCIENCE, 1),
+                tuple(BookType.COMPUTER, 2L),
+                tuple(BookType.SCIENCE, 1L),
             )
     }
 
