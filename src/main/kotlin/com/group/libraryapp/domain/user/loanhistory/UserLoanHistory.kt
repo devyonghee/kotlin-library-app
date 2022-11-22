@@ -16,7 +16,11 @@ class UserLoanHistory(
 ) {
 
     fun doReturn() {
-        this.status = UserLoanStatus.RETURNED;
+        this.status = UserLoanStatus.RETURNED
+    }
+
+    fun isReturn(): Boolean {
+        return this.status == UserLoanStatus.RETURNED
     }
 
     companion object {
